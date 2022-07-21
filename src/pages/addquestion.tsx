@@ -27,7 +27,7 @@ interface Question {
     email: String
 }
 
-function AddQuestion(props: any) {
+const AddQuestion: React.FC = (props: any) => {
     const question = trpc.useMutation(["question.question"]);
     const route = useRouter();
     const toast = useToast();
@@ -57,20 +57,14 @@ function AddQuestion(props: any) {
             email: session?.user?.email || '' // Fix me
         }
 
-        const response = await question.mutateAsync(data, {
-            onError: (error) => {
-                console.log(error);
-
-            }
-        });
-        console.log(response)
-        // if ((await response).success) {
-        //     route.push('/dailyquestions');
-        //     Toast();
-        //     // Clear inputs after successful add
-        //     // e.target[0].value = '';
-        //     // e.target[1].value = '';
-        // }
+        const response = await question.mutateAsync(data);
+        if ((await response).success) {
+            route.push('/dailyquestions');
+            Toast();
+            // Clear inputs after successful add
+            // e.target[0].value = '';
+            // e.target[1].value = '';
+        }
     }
 
     return (
@@ -113,7 +107,6 @@ function AddQuestion(props: any) {
                             </FormControl>
                             <FormControl id="category" isRequired>
                                 <FormLabel htmlFor='category'>Category</FormLabel>
-                                {/* <Input type="text" /> */}
                                 <Categories category={handleCategoryChange} />
                             </FormControl>
                             <FormControl>

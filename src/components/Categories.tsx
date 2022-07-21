@@ -1,4 +1,3 @@
-import React from 'react';
 import { Select, Stack } from '@chakra-ui/react';
 
 export interface Item {
@@ -18,8 +17,7 @@ const categories = [
     { value: "politics", label: "Politics" }
 ];
 
-
-const Categories: React.FC = (props: any) => {
+const Categories = (props: any) => {
     const handleSelectedItemsChange = (e: any) => {
         props.category(e.target.value)
     };

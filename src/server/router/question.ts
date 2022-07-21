@@ -1,7 +1,5 @@
 import { createRouter } from "./context";
-
 import { z } from "zod";
-
 
 export const questionRouter = createRouter()
     .query("getAllQuestions", {
@@ -26,12 +24,6 @@ export const questionRouter = createRouter()
             category: z.string()
         }),
         async resolve({ input, ctx }) {
-            // if (ctx.session?.user?.id === null) {
-            //     throw new TRPCError({
-            //         message: "NOT YOUR QUESTION",
-            //         code: "UNAUTHORIZED",
-            //     });
-            // }
             const question = await ctx.prisma.question.create({
                 data: {
                     title: input?.title,
@@ -56,13 +48,6 @@ export const questionRouter = createRouter()
                     author: true,
                 },
             });
-            // return { success: true, question: question };
-            return question;
+            return { success: true, question: question };
         },
-    })
-
-    // .query("getAllQuestions", {
-    //     async resolve({ ctx }) {
-    //         return await ctx.prisma.example.findMany();
-    //     },
-    // })
+    });
