@@ -51,6 +51,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     questions     Question[]
+    liked         Like[]
 }
 
 model VerificationToken {
@@ -73,6 +74,7 @@ model Question {
     author    User       @relation(fields: [authorId], references: [id])
     authorId  String
     category  Category[]
+    like      Like[]
 }
 
 model Category {
@@ -80,4 +82,14 @@ model Category {
     category   String
     question   Question @relation(fields: [questionId], references: [id])
     questionId String
+}
+
+model Like {
+    id         String   @id @default(uuid())
+    qustion    Question @relation(fields: [questionId], references: [id])
+    questionId String
+    email      String
+    likedBy    User     @relation(fields: [email], references: [email])
+    like       Boolean
+    createdAt  DateTime @default(now())
 }

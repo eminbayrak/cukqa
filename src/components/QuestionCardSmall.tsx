@@ -18,7 +18,7 @@ import { motion } from 'framer-motion';
 
 export default function QuestionCardSmall(props: any) {
     const route = useRouter();
-    const MotionImg = motion(Img);
+    const MotionBtn = motion(Img);
     const cardColor = useColorModeValue('gray.100', 'gray.700');
     const cardColorBg = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
     return (
@@ -29,7 +29,7 @@ export default function QuestionCardSmall(props: any) {
                 h="240px"
                 position="relative"
                 overflow="hidden">
-                <MotionImg
+                <MotionBtn
                     // animate={{ y: 100 }}
                     transition={{ type: "spring", stiffness: 100 }}
                     whileHover={{ scale: 1.1 }}
@@ -65,7 +65,7 @@ export default function QuestionCardSmall(props: any) {
                     </Link>
                 </Text>
                 <Flex align="center">
-                    <Text ml={1} fontSize={['xs', null, 'sm']}>
+                    <Text ml={1} fontSize={['xs', null, 'xs']}>
                         {props.createdAt.toLocaleString()}
                     </Text>
                 </Flex>

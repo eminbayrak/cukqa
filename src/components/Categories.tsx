@@ -1,12 +1,12 @@
-import React from 'react'
-import { CUIAutoComplete } from 'chakra-ui-autocomplete'
-import { useColorMode } from '@chakra-ui/system';
+import React from 'react';
+import { Select, Stack } from '@chakra-ui/react';
 
 export interface Item {
     label: string;
     value: string;
 }
-const countries = [
+const categories = [
+    { value: "general", label: "General" },
     { value: "lifestyle", label: "Life Style" },
     { value: "fashion", label: "Fashion" },
     { value: "technology", label: "Technology" },
@@ -18,36 +18,20 @@ const countries = [
     { value: "politics", label: "Politics" }
 ];
 
-export default function Categories(props: any) {
-    const { colorMode, toggleColorMode } = useColorMode();
-    const [pickerItems, setPickerItems] = React.useState(countries);
-    const [selectedItems, setSelectedItems] = React.useState<Item[]>([]);
 
-    const handleCreateItem = (item: Item) => {
-        setPickerItems((curr) => [...curr, item]);
-        setSelectedItems((curr) => [...curr, item]);
+const Categories: React.FC = (props: any) => {
+    const handleSelectedItemsChange = (e: any) => {
+        props.category(e.target.value)
     };
-
-    const handleSelectedItemsChange = (selectedItems?: Item[]) => {
-        if (selectedItems) {
-            setSelectedItems(selectedItems);
-            const items = selectedItems.map((item: any) => item.value)
-            props.category(items)
-        }
-    };
-
     return (
-        <CUIAutoComplete
-            label="Category"
-            placeholder=""
-            onCreateItem={handleCreateItem}
-            items={pickerItems}
-            highlightItemBg={colorMode === 'dark' ? 'whiteAlpha.200' : 'blackAlpha.200'}
-            selectedItems={selectedItems}
-            listStyleProps={{ bg: 'transparent' }}
-            onSelectedItemsChange={(changes) => {
-                handleSelectedItemsChange(changes.selectedItems)
-            }}
-        />
+        <Stack spacing={3}>
+            <Select variant='outline' onChange={handleSelectedItemsChange}>
+                {categories.map((item: any) =>
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                )}
+            </Select>
+        </Stack>
     );
 }
+
+export default Categories;

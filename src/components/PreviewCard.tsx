@@ -1,5 +1,4 @@
-// import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
+import { useEffect, useState } from 'react';
 import {
     Avatar,
     Box,
@@ -12,17 +11,82 @@ import {
     ModalOverlay,
     Stack,
     Text,
-    useBreakpointValue
+    useBreakpointValue,
+    useToast,
+    useDisclosure,
+    HStack,
+    Divider
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
+import { BsFillHandThumbsUpFill, BsFillHandThumbsDownFill } from 'react-icons/bs';
+import { useSession } from 'next-auth/react';
+import { trpc } from "../utils/trpc";
 
 export default function PreviewImage(props: any) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const MotionImg = motion(Button);
-    const route = useRouter();
+    const { data: session } = useSession();
+    const mutation = trpc.useMutation('like.addLike');
+    const { data, refetch } = trpc.useQuery(["like.getAllLikesById", { questionId: props.question.id }]);
+    const toast = useToast();
+    const MotionBtn = motion(Button);
     const size = useBreakpointValue({ base: 'sm', md: 'sm' });
     const IMAGE = 'https://random.imagecdn.app/445/320';
+    const [yes, setYes] = useState(0);
+    const [no, setNo] = useState(0);
+    const [canVote, setCanVote] = useState(true);
+    function Toast() {
+        return (
+            toast({
+                title: 'Thank you... 🎉',
+                description: "We appreciate your answer!",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+        )
+    }
+    async function handleYesButtonClick() {
+        const likeData = ({
+            email: session?.user?.email!,
+            questionId: props.question.id,
+            like: true
+        });
+        const response = mutation.mutateAsync(likeData);
+        if ((await response).success) {
+            Toast();
+            onClose();
+            refetch();
+        }
+    }
+    async function handleNoButtonClick() {
+        const likeData = ({
+            email: session?.user?.email!,
+            questionId: props.question.id,
+            like: false
+        });
+        const response = await mutation.mutateAsync(likeData);
+        if ((await response).success) {
+            Toast();
+            onClose();
+            refetch();
+        }
+    }
+
+    useEffect(() => {
+        let yesCount = 0;
+        let noCount = 0;
+        setCanVote(true);
+        data?.map((obj: any) => {
+            obj.like ? yesCount++ : noCount++;
+            if (obj.email === session?.user?.email) {
+                setCanVote(false)
+            }
+        });
+        setYes(yesCount);
+        setNo(noCount);
+    }, [data, session?.user?.email]);
+
     return (
         <Modal
             isOpen={props.isOpen}
@@ -48,6 +112,29 @@ export default function PreviewImage(props: any) {
                             objectFit={'cover'}
                             src={IMAGE}
                         />
+                        <Box
+                            position="absolute"
+                            top={2}
+                            right={2}
+                            borderRadius={3}
+                            bgGradient="linear(to-r, red.400,pink.400)"
+                        >
+                            <Button
+                                bg={'transparent'}
+                                _hover={{ backGround: 'transparent' }}
+                                leftIcon={<BsFillHandThumbsUpFill />}
+                            >
+                                {yes}
+                            </Button>
+                            <Button
+                                bg={'transparent'}
+                                _hover={{ backGround: 'transparent' }}
+                                leftIcon={<BsFillHandThumbsDownFill />}
+                            >
+                                {no}
+                            </Button>
+                        </Box>
+
                     </Box>
                     <Stack spacing={4}>
                         <Heading
@@ -68,26 +155,38 @@ export default function PreviewImage(props: any) {
                         </Text>
                     </Stack>
                     <Box as={'form'} mt={10}>
-                        <Stack mt={8} direction={'row'} spacing={4}>
-                            <MotionImg
-                                flex={1}
-                                transition={{ type: "spring", stiffness: 100 }}
-                                whileHover={{ scale: 1.1 }}
-                                mr={2}
-                            >
-                                Yes
-                            </MotionImg>
-                            <MotionImg
-                                flex={1}
-                                transition={{ type: "spring", stiffness: 100 }}
-                                whileHover={{ scale: 1.1 }}
-                                mr={2}
-                            >
-                                No
-                            </MotionImg>
-                        </Stack>
+                        {canVote ?
+                            <Stack mt={8} direction={'row'} spacing={4}>
+                                <MotionBtn
+                                    flex={1}
+                                    transition={{ type: "spring", stiffness: 100 }}
+                                    whileHover={{ scale: 1.1 }}
+                                    mr={2}
+                                    leftIcon={<BsFillHandThumbsUpFill />}
+                                    onClick={handleYesButtonClick}
+                                >
+                                    Yes
+                                </MotionBtn>
+                                <MotionBtn
+                                    flex={1}
+                                    transition={{ type: "spring", stiffness: 100 }}
+                                    whileHover={{ scale: 1.1 }}
+                                    mr={2}
+                                    leftIcon={<BsFillHandThumbsDownFill />}
+                                    onClick={handleNoButtonClick}
+                                >
+                                    No
+                                </MotionBtn>
+                            </Stack> :
+                            <HStack>
+                                <Text>You already answered this question...</Text>
+                                <Image src="https://cdn3.emoji.gg/emojis/kappa.png" width="32px" height="32px" alt="kappa" />
+                            </HStack>
+                        }
+
                     </Box>
-                    <Stack mt={8} direction={'row'} spacing={4} align={'center'}>
+                    <Divider mt={8} />
+                    <Stack mt={4} direction={'row'} spacing={4} align={'center'}>
                         <Avatar
                             src={props.question.author.image ?? 'https://1.bp.blogspot.com/-ssJSWVoznXM/Xl1mCmu921I/AAAAAAAAnp0/eCbQVoaBfKcZaSBL2UJ5tvNMzmSpBwXtwCLcBGAsYHQ/s2560/anonymous_background-wallpaper-120x120.jpg'}
                         />

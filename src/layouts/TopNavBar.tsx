@@ -64,7 +64,7 @@ export default function TopNavBar() {
     const { data: session } = useSession();
     const { colorMode, toggleColorMode } = useColorMode();
     const [components, setComponents] = useState(false);
-    const MotionImg = motion(Button);
+    const MotionBtn = motion(Button);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const bgColor = useColorModeValue('white', 'gray.800');
     const scrollToTop = () => {
@@ -97,7 +97,7 @@ export default function TopNavBar() {
                     as={'nav'}
                     display={{ base: 'none', md: 'flex' }}>
                     <Box>
-                        <MotionImg
+                        <MotionBtn
                             transition={{ type: "spring", stiffness: 100 }}
                             whileHover={{ scale: 1.1 }}
                             mr={2}
@@ -105,7 +105,7 @@ export default function TopNavBar() {
                             onClick={checkLogin}
                         >
                             Add Question
-                        </MotionImg>
+                        </MotionBtn>
                         {<LoggedIn isOpen={components} onClose={onClose} />}
                         <Button mr={5} onClick={toggleColorMode} background={'transparent'}>
                             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}

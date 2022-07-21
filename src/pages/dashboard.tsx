@@ -10,6 +10,7 @@ import {
     ColorModeScript
 } from '@chakra-ui/react';
 import TopNavBar from '../layouts/TopNavBar';
+import Footer from '../components/Footer';
 
 function Dashboard() {
     const router = useRouter();
@@ -50,6 +51,7 @@ function Dashboard() {
                     </Stack>
                 </Box>
             </Center>
+            <Footer />
         </>
     )
 }

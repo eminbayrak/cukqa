@@ -13,15 +13,19 @@ import {
 import { trpc } from "../utils/trpc";
 import QuestionCardSmall from '../components/QuestionCardSmall';
 import PreviewCard from '../components/PreviewCard';
+import Footer from '../components/Footer';
 
 export default function DailyQuestions() {
     const { data, isLoading, isError } = trpc.useQuery(["question.getAllQuestions"]);
     const [selectedPost, setSelectedPost] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     const view = (question: any) => {
         setSelectedPost(question);
         onOpen();
     };
+
+
     const IMAGE = 'https://random.imagecdn.app/445/320';
 
     return (
@@ -58,19 +62,7 @@ export default function DailyQuestions() {
                 </SimpleGrid>
             </Container>
             {selectedPost && <PreviewCard isOpen={isOpen} onClose={onClose} question={selectedPost} />}
-            <Container as="footer" maxW="xl" textAlign="center" py={10}>
-                <Text>
-                    Made with{' '}
-                    <span role="img" aria-label="heart emoji">
-                        ❤️
-                    </span>{' '}
-                    by{' '}
-                    <Link href="https://github.com/eminbayrak/" isExternal>
-                        {'Emin Bayrak'}
-                    </Link>
-                </Text>
-                <Text>{(new Date()).getUTCFullYear()}</Text>
-            </Container>
+            <Footer />
         </Box>
     );
 }

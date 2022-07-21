@@ -20,11 +20,18 @@ export const questionRouter = createRouter()
     })
     .mutation("question", {
         input: z.object({
-            title: z.string(),
-            content: z.string(),
-            email: z.string()
+            title: z.string().min(5).max(150),
+            content: z.string().min(20).max(300),
+            email: z.string(),
+            category: z.string()
         }),
         async resolve({ input, ctx }) {
+            // if (ctx.session?.user?.id === null) {
+            //     throw new TRPCError({
+            //         message: "NOT YOUR QUESTION",
+            //         code: "UNAUTHORIZED",
+            //     });
+            // }
             const question = await ctx.prisma.question.create({
                 data: {
                     title: input?.title,
@@ -39,19 +46,18 @@ export const questionRouter = createRouter()
                             },
                         },
                     },
-                    // category: {
-                    //     connectOrCreate: {
-                    //         create: {
-
-                    //         }
-                    //     }
-                    // }
+                    category: {
+                        create: {
+                            category: input?.category
+                        }
+                    }
                 },
                 include: {
                     author: true,
                 },
             });
-            return { success: true, question: question };
+            // return { success: true, question: question };
+            return question;
         },
     })
 

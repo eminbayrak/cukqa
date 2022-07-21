@@ -18,16 +18,25 @@ import BackButton from '../components/BackButton';
 import TopNavBar from '../layouts/TopNavBar';
 import { useRouter } from 'next/router';
 import Categories from '../components/Categories';
+import Footer from '../components/Footer';
+
+interface Question {
+    title: String,
+    content: String,
+    category: String,
+    email: String
+}
 
 function AddQuestion(props: any) {
     const question = trpc.useMutation(["question.question"]);
     const route = useRouter();
     const toast = useToast();
     const { data: session } = useSession();
-    const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState('');
     const handleCategoryChange = (data: any) => {
         setCategory(data)
     }
+
     function Toast() {
         return (
             toast({
@@ -44,19 +53,26 @@ function AddQuestion(props: any) {
         const data = {
             title: e.target[0].value,
             content: e.target[1].value,
-            category: category[0],
+            category: category,
             email: session?.user?.email || '' // Fix me
         }
 
-        const response = question.mutateAsync(data);
-        if ((await response).success) {
-            route.push('/dailyquestions');
-            Toast();
-            // Clear inputs after successful add
-            // e.target[0].value = '';
-            // e.target[1].value = '';
-        }
+        const response = await question.mutateAsync(data, {
+            onError: (error) => {
+                console.log(error);
+
+            }
+        });
+        console.log(response)
+        // if ((await response).success) {
+        //     route.push('/dailyquestions');
+        //     Toast();
+        //     // Clear inputs after successful add
+        //     // e.target[0].value = '';
+        //     // e.target[1].value = '';
+        // }
     }
+
     return (
         <>
             <TopNavBar />
@@ -89,15 +105,15 @@ function AddQuestion(props: any) {
                         <Stack spacing={4}>
                             <FormControl id="title" isRequired>
                                 <FormLabel htmlFor='title'>Title</FormLabel>
-                                <Input type="text" />
+                                <Input type="text" autoFocus />
                             </FormControl>
                             <FormControl id="content" isRequired>
                                 <FormLabel htmlFor='content'>Content</FormLabel>
                                 <Input type="text" />
                             </FormControl>
                             <FormControl id="category" isRequired>
-                                {/* <FormLabel htmlFor='category'>Category</FormLabel>
-                                <Input type="text" /> */}
+                                <FormLabel htmlFor='category'>Category</FormLabel>
+                                {/* <Input type="text" /> */}
                                 <Categories category={handleCategoryChange} />
                             </FormControl>
                             <FormControl>
@@ -122,8 +138,10 @@ function AddQuestion(props: any) {
                     </form>
                 </Box>
             </Center>
+            <Footer />
         </>
     )
 }
+
 
 export default AddQuestion;
