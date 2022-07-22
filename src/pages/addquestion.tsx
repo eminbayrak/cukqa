@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { trpc } from "../utils/trpc";
 import { useSession } from "next-auth/react";
 import {
@@ -12,13 +12,14 @@ import {
     FormLabel,
     Stack,
     Select,
+    useToast
 } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react';
 import BackButton from '../components/BackButton';
 import TopNavBar from '../layouts/TopNavBar';
 import { useRouter } from 'next/router';
 import Categories from '../components/Categories';
 import Footer from '../components/Footer';
+import { useDropzone } from 'react-dropzone';
 
 interface Question {
     title: String,
@@ -27,7 +28,7 @@ interface Question {
     email: String
 }
 
-const AddQuestion: React.FC = (props: any) => {
+const AddQuestion: React.FC<Question> = (props: any) => {
     const question = trpc.useMutation(["question.question"]);
     const route = useRouter();
     const toast = useToast();
@@ -36,6 +37,31 @@ const AddQuestion: React.FC = (props: any) => {
     const handleCategoryChange = (data: any) => {
         setCategory(data)
     }
+
+    const baseStyle = {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '20px',
+        borderWidth: 2,
+        borderRadius: 2,
+        borderStyle: 'dashed',
+        outline: 'none',
+        transition: 'border .24s ease-in-out'
+    };
+
+    const focusedStyle = {
+        borderColor: '#2196f3'
+    };
+
+    const acceptStyle = {
+        borderColor: '#00e676'
+    };
+
+    const rejectStyle = {
+        borderColor: '#ff1744'
+    };
 
     function Toast() {
         return (
@@ -54,7 +80,7 @@ const AddQuestion: React.FC = (props: any) => {
             title: e.target[0].value,
             content: e.target[1].value,
             category: category,
-            email: session?.user?.email || '' // Fix me
+            email: session?.user?.email || ''
         }
 
         const response = await question.mutateAsync(data);
@@ -66,6 +92,29 @@ const AddQuestion: React.FC = (props: any) => {
             // e.target[1].value = '';
         }
     }
+
+    const {
+        acceptedFiles,
+        getRootProps,
+        getInputProps,
+        isFocused,
+        isDragAccept,
+        isDragReject
+    } = useDropzone({ accept: { 'image/*': [] } });
+
+    const style: any = useMemo(() => ({
+        ...baseStyle,
+        ...(isFocused ? focusedStyle : {}),
+        ...(isDragAccept ? acceptStyle : {}),
+        ...(isDragReject ? rejectStyle : {})
+    }), [baseStyle, isFocused, focusedStyle, isDragAccept, acceptStyle, isDragReject, rejectStyle]);
+
+    const acceptedFileItems = acceptedFiles.map((file: any) => {
+        console.log(file)
+        return (<li key={file.path}>
+            {file.path} - {file.size} bytes
+        </li>);
+    });
 
     return (
         <>
@@ -108,6 +157,18 @@ const AddQuestion: React.FC = (props: any) => {
                             <FormControl id="category" isRequired>
                                 <FormLabel htmlFor='category'>Category</FormLabel>
                                 <Categories category={handleCategoryChange} />
+                            </FormControl>
+                            <FormControl id="uploadImg" isRequired>
+                                <FormLabel htmlFor='uploadImg'>Image</FormLabel>
+                                <div className="container">
+                                    <div {...getRootProps({ style })}>
+                                        <Input {...getInputProps()} />
+                                        <Text as='em'>{`Drag 'n' drop your image here, or click to select`}</Text>
+                                    </div>
+                                    <aside>
+                                        <Text ml={4}>{acceptedFileItems}</Text>
+                                    </aside>
+                                </div>
                             </FormControl>
                             <FormControl>
                                 <Button
