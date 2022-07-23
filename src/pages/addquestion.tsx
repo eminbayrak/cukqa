@@ -209,7 +209,7 @@ const AddQuestion: React.FC<Question> = (props: any) => {
                             <FormControl isInvalid={!isImgUrl} isRequired>
                                 <FormLabel>Image URL</FormLabel>
                                 <Input
-                                    type='text'
+                                    type='url'
                                     onBlur={handleImgUrlChange}
                                 />
                                 {isImgUrl ? (
