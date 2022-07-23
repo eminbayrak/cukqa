@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
+import TwitchProvider from "next-auth/providers/twitch";
 import EmailProvider from "next-auth/providers/email";
 
 // Prisma adapter for NextAuth, optional and can be removed
@@ -22,9 +23,13 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID || '',
       clientSecret: env.GOOGLE_CLIENT_SECRET || '',
     }),
-    TwitterProvider({
-      clientId: env.TWITTER_CLIENT_ID || '',
-      clientSecret: env.TWITTER_CLIENT_SECRET || ''
+    // TwitterProvider({
+    //   clientId: env.TWITTER_CLIENT_ID || '',
+    //   clientSecret: env.TWITTER_CLIENT_SECRET || ''
+    // }),
+    TwitchProvider({
+      clientId: process.env.TWITCH_CLIENT_ID || '',
+      clientSecret: process.env.TWITCH_CLIENT_SECRET || ''
     }),
     // CredentialsProvider({
     //   name: "Credentials",

@@ -34,6 +34,7 @@ export default function PreviewImage(props: any) {
     const [yes, setYes] = useState(0);
     const [no, setNo] = useState(0);
     const [canVote, setCanVote] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     function Toast() {
         return (
             toast({
@@ -76,8 +77,10 @@ export default function PreviewImage(props: any) {
         let yesCount = 0;
         let noCount = 0;
         setCanVote(true);
+        setIsLoggedIn(false);
         data?.map((obj: any) => {
             obj.like ? yesCount++ : noCount++;
+            session?.user?.email && setIsLoggedIn(true);
             if (obj.email === session?.user?.email) {
                 setCanVote(false)
             }
@@ -154,33 +157,38 @@ export default function PreviewImage(props: any) {
                         </Text>
                     </Stack>
                     <Box as={'form'} mt={10}>
-                        {canVote ?
-                            <Stack mt={8} direction={'row'} spacing={4}>
-                                <MotionBtn
-                                    flex={1}
-                                    transition={{ type: "spring", stiffness: 100 }}
-                                    whileHover={{ scale: 1.1 }}
-                                    mr={2}
-                                    leftIcon={<BsFillHandThumbsUpFill />}
-                                    onClick={handleYesButtonClick}
-                                >
-                                    Yes
-                                </MotionBtn>
-                                <MotionBtn
-                                    flex={1}
-                                    transition={{ type: "spring", stiffness: 100 }}
-                                    whileHover={{ scale: 1.1 }}
-                                    mr={2}
-                                    leftIcon={<BsFillHandThumbsDownFill />}
-                                    onClick={handleNoButtonClick}
-                                >
-                                    No
-                                </MotionBtn>
-                            </Stack> :
+                        {!isLoggedIn ?
                             <HStack>
-                                <Text>You already answered this question...</Text>
-                                <Image src="https://cdn3.emoji.gg/emojis/kappa.png" width="32px" height="32px" alt="kappa" />
+                                <Text>You need to login to be able to answer this question...</Text>
+                                <Image src="https://cdn3.emoji.gg/emojis/1510-tsumikiwow.png" width="32px" height="32px" alt="kappa" />
                             </HStack>
+                            : canVote ?
+                                <Stack mt={8} direction={'row'} spacing={4}>
+                                    <MotionBtn
+                                        flex={1}
+                                        transition={{ type: "spring", stiffness: 100 }}
+                                        whileHover={{ scale: 1.1 }}
+                                        mr={2}
+                                        leftIcon={<BsFillHandThumbsUpFill />}
+                                        onClick={handleYesButtonClick}
+                                    >
+                                        Yes
+                                    </MotionBtn>
+                                    <MotionBtn
+                                        flex={1}
+                                        transition={{ type: "spring", stiffness: 100 }}
+                                        whileHover={{ scale: 1.1 }}
+                                        mr={2}
+                                        leftIcon={<BsFillHandThumbsDownFill />}
+                                        onClick={handleNoButtonClick}
+                                    >
+                                        No
+                                    </MotionBtn>
+                                </Stack> :
+                                <HStack>
+                                    <Text>You already answered this question...</Text>
+                                    <Image src="https://cdn3.emoji.gg/emojis/6981-kappawink.gif" width="32px" height="32px" alt="kappa" />
+                                </HStack>
                         }
 
                     </Box>

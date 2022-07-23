@@ -9,7 +9,7 @@ import {
     Text,
     Divider
 } from '@chakra-ui/react';
-import { BsGoogle, BsTwitter } from 'react-icons/bs';
+import { BsGoogle, BsTwitch, BsTwitter } from 'react-icons/bs';
 import { signIn, useSession } from 'next-auth/react';
 
 function SignIn() {
@@ -48,10 +48,10 @@ function SignIn() {
                             size={'lg'}
                             px={6}
                             variant='outline'
-                            leftIcon={<BsTwitter />}
-                            onClick={handleOAuthSignIn('twitter')}
+                            leftIcon={<BsTwitch />}
+                            onClick={handleOAuthSignIn('twitch')}
                         >
-                            Twitter
+                            Twitch
                         </Button>
                         <br />
                         <Divider />
