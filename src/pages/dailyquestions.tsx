@@ -55,7 +55,7 @@ export default function DailyQuestions() {
                                 subtitle={question.content}
                                 name={question.author.name}
                                 avatarImg={question.author.image}
-                                img={IMAGE}
+                                img={question.imageUrl}
                                 createdAt={`${question.createdAt.toLocaleString("en-US", { month: "short" })} ${question.createdAt.getDate()}, ${question.createdAt.getFullYear()}`}
                             />
                     )}

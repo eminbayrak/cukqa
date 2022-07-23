@@ -75,6 +75,7 @@ model Question {
     authorId  String
     category  Category[]
     like      Like[]
+    imageUrl  String     @default("")
 }
 
 model Category {

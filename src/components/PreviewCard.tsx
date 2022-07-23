@@ -24,7 +24,6 @@ import { trpc } from "../utils/trpc";
 
 export default function PreviewImage(props: any) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
     const { data: session } = useSession();
     const mutation = trpc.useMutation('like.addLike');
     const { data, refetch } = trpc.useQuery(["like.getAllLikesById", { questionId: props.question.id }]);
@@ -110,7 +109,7 @@ export default function PreviewImage(props: any) {
                             width={'100%'}
                             alt={props.question.title}
                             objectFit={'cover'}
-                            src={IMAGE}
+                            src={props.question.imageUrl ?? IMAGE}
                         />
                         <Box
                             position="absolute"

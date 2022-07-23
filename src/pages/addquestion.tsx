@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { trpc } from "../utils/trpc";
 import { useSession } from "next-auth/react";
 import {
@@ -12,14 +12,17 @@ import {
     FormLabel,
     Stack,
     Select,
-    useToast
+    useToast,
+    Image,
+    FormHelperText,
+    FormErrorMessage
 } from '@chakra-ui/react';
 import BackButton from '../components/BackButton';
 import TopNavBar from '../layouts/TopNavBar';
 import { useRouter } from 'next/router';
 import Categories from '../components/Categories';
 import Footer from '../components/Footer';
-import { useDropzone } from 'react-dropzone';
+import Dropzone, { useDropzone } from 'react-dropzone';
 
 interface Question {
     title: String,
@@ -37,6 +40,10 @@ const AddQuestion: React.FC<Question> = (props: any) => {
     const handleCategoryChange = (data: any) => {
         setCategory(data)
     }
+    const [loading, setLoading] = useState(false);
+    const [image, setImage] = useState('');
+    const [isImgUrl, setIsImgUrl] = useState<Boolean>(true);
+    const handleImgUrlChange = (e: any) => setIsImgUrl(e.target.value.match(/\.(jpeg|jpg|gif|png)$/) != null);
 
     const baseStyle = {
         flex: 1,
@@ -79,10 +86,10 @@ const AddQuestion: React.FC<Question> = (props: any) => {
         const data = {
             title: e.target[0].value,
             content: e.target[1].value,
-            category: category,
-            email: session?.user?.email || ''
+            category: e.target[2].value,
+            imageUrl: e.target[3].value,
+            email: session?.user?.email || '',
         }
-
         const response = await question.mutateAsync(data);
         if ((await response).success) {
             route.push('/dailyquestions');
@@ -93,6 +100,13 @@ const AddQuestion: React.FC<Question> = (props: any) => {
         }
     }
 
+    const onDrop = useCallback((acceptedFiles: any) => {
+        setLoading(true);
+        uploadImage(acceptedFiles[0])
+            .then((json: any) => setImage(json.url))
+            .finally(() => setLoading(false));
+    }, []);
+
     const {
         acceptedFiles,
         getRootProps,
@@ -100,7 +114,7 @@ const AddQuestion: React.FC<Question> = (props: any) => {
         isFocused,
         isDragAccept,
         isDragReject
-    } = useDropzone({ accept: { 'image/*': [] } });
+    } = useDropzone({ onDrop, multiple: false, accept: { 'image/*': [] } });
 
     const style: any = useMemo(() => ({
         ...baseStyle,
@@ -110,11 +124,23 @@ const AddQuestion: React.FC<Question> = (props: any) => {
     }), [baseStyle, isFocused, focusedStyle, isDragAccept, acceptStyle, isDragReject, rejectStyle]);
 
     const acceptedFileItems = acceptedFiles.map((file: any) => {
-        console.log(file)
         return (<li key={file.path}>
             {file.path} - {file.size} bytes
         </li>);
     });
+
+    const uploadImage = (image: any) => {
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('upload_preset', 'grmenu_photos');
+        return fetch('https://cloudinary-react-dropzone.vercel.app/api/upload', {
+            method: 'POST',
+            body: formData,
+        }).then((response: any) => {
+            console.log(response)
+            return response.json()
+        })
+    }
 
     return (
         <>
@@ -142,8 +168,8 @@ const AddQuestion: React.FC<Question> = (props: any) => {
                     rounded="lg"
                     shadow="lg"
                 >
-                    <BackButton />
-                    <Text mt={10} color={'gray.400'} mb={5} fontSize={{ base: 'sm', sm: 'md' }}>Make sure that your question is clear and only has yes or no answer!</Text>
+                    {/* <BackButton /> */}
+                    <Text color={'gray.400'} mb={5} fontSize={{ base: 'sm', sm: 'md' }}>Make sure that your question is clear and only has yes or no answer!</Text>
                     <form onSubmit={addQuestion}>
                         <Stack spacing={4}>
                             <FormControl id="title" isRequired>
@@ -158,17 +184,41 @@ const AddQuestion: React.FC<Question> = (props: any) => {
                                 <FormLabel htmlFor='category'>Category</FormLabel>
                                 <Categories category={handleCategoryChange} />
                             </FormControl>
-                            <FormControl id="uploadImg" isRequired>
+                            {/* <FormControl id="uploadImg" isRequired>
                                 <FormLabel htmlFor='uploadImg'>Image</FormLabel>
                                 <div className="container">
                                     <div {...getRootProps({ style })}>
-                                        <Input {...getInputProps()} />
-                                        <Text as='em'>{`Drag 'n' drop your image here, or click to select`}</Text>
+                                        <input {...getInputProps()} />
+                                        {
+                                            image ? (
+                                                <Image src={image} alt={"Upload image"} />
+                                            ) :
+                                                loading ? (
+                                                    <p>Preparing...</p>
+                                                ) : (
+                                                    <Text as='em'>{`Drag 'n' drop your image here, or click to select`}</Text>
+                                                )
+                                        }
                                     </div>
                                     <aside>
                                         <Text ml={4}>{acceptedFileItems}</Text>
                                     </aside>
                                 </div>
+                                <Input type="text" placeholder={'Enter URL of image'} />
+                            </FormControl> */}
+                            <FormControl isInvalid={!isImgUrl} isRequired>
+                                <FormLabel>Image URL</FormLabel>
+                                <Input
+                                    type='text'
+                                    onBlur={handleImgUrlChange}
+                                />
+                                {isImgUrl ? (
+                                    <FormHelperText>
+                                        {''}
+                                    </FormHelperText>
+                                ) : (
+                                    <FormErrorMessage>Please enter a correct image url</FormErrorMessage>
+                                )}
                             </FormControl>
                             <FormControl>
                                 <Button

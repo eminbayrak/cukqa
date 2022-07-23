@@ -21,13 +21,15 @@ export const questionRouter = createRouter()
             title: z.string().min(5).max(150),
             content: z.string().min(20).max(300),
             email: z.string(),
-            category: z.string()
+            category: z.string(),
+            imageUrl: z.string()
         }),
         async resolve({ input, ctx }) {
             const question = await ctx.prisma.question.create({
                 data: {
                     title: input?.title,
                     content: input?.content,
+                    imageUrl: input?.imageUrl,
                     author: {
                         connectOrCreate: {
                             create: {
