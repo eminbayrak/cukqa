@@ -140,3 +140,16 @@ export const groupedOptions: readonly GroupedOption[] = [
         options: flavourOptions,
     },
 ];
+
+export const CategoriesData = [
+    { value: "general", label: "General" },
+    { value: "lifestyle", label: "Life Style" },
+    { value: "fashion", label: "Fashion" },
+    { value: "technology", label: "Technology" },
+    { value: "business", label: "Business" },
+    { value: "economy", label: "Economy" },
+    { value: "sport", label: "Sport" },
+    { value: "people", label: "People" },
+    { value: "country", label: "Country" },
+    { value: "politics", label: "Politics" }
+];

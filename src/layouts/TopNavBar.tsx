@@ -1,9 +1,8 @@
-import { ReactNode, useState } from 'react';
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useState } from 'react';
+import { useSession } from "next-auth/react";
 import {
     Box,
     Text,
-    Link,
     Button,
     Modal,
     useDisclosure,
@@ -15,37 +14,26 @@ import {
     ModalBody,
     ModalContent,
     ModalFooter,
-    Show,
-    Hide,
-    Avatar,
-    Flex,
     HStack,
     IconButton,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
     Stack,
     Popover,
     PopoverArrow,
     PopoverBody,
-    PopoverCloseButton,
     PopoverContent,
-    PopoverHeader,
     PopoverTrigger
 } from '@chakra-ui/react';
-import { AddIcon, CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import LoginButton from '../components/LoginButton';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+import DrawerBar from '../components/Drawer';
 
 export const LoggedIn = (props: any) => {
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Uh Oh! You haven't signed in!</ModalHeader>
+                <ModalHeader>{`Uh Oh! You haven't signed in!`}</ModalHeader>
                 <ModalBody>
                     <Text>To be able to register your question, we need to know who you are.</Text>
                 </ModalBody>
@@ -57,14 +45,11 @@ export const LoggedIn = (props: any) => {
     )
 }
 
-
-
 export default function TopNavBar() {
     const route = useRouter();
     const { data: session } = useSession();
     const { colorMode, toggleColorMode } = useColorMode();
     const [components, setComponents] = useState(false);
-    const MotionBtn = motion(Button);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const bgColor = useColorModeValue('white', 'gray.800');
     const scrollToTop = () => {
@@ -77,35 +62,36 @@ export default function TopNavBar() {
     return (
         <Box position="fixed" w="100%" zIndex={1} backgroundColor={bgColor}>
             <Container
-                maxW="5xl"
+                maxW="6xl"
                 py={3}
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center">
-                <Box
-                    fontSize="xl"
-                    onClick={scrollToTop}
-                    borderWidth='2px'
-                    cursor="pointer"
-                    padding={1}
-                    borderRadius={'xl'}
-                    borderColor='#DB1C70'
-                >
-                    CUKQA
-                </Box>
+                <HStack>
+                    <Text
+                        fontSize="xl"
+                        onClick={scrollToTop}
+                        borderWidth='2px'
+                        cursor="pointer"
+                        padding={1}
+                        borderRadius={'xl'}
+                        borderColor='#DB1C70'
+                    >
+                        CUKQA
+                    </Text>
+                    <DrawerBar />
+                </HStack>
                 <HStack
                     as={'nav'}
                     display={{ base: 'none', md: 'flex' }}>
                     <Box>
-                        <MotionBtn
-                            transition={{ type: "spring", stiffness: 100 }}
-                            whileHover={{ scale: 1.1 }}
+                        <Button
                             mr={2}
                             bg={'ghost'}
                             onClick={checkLogin}
                         >
                             Add Question
-                        </MotionBtn>
+                        </Button>
                         {<LoggedIn isOpen={components} onClose={onClose} />}
                         <Button mr={5} onClick={toggleColorMode} background={'transparent'}>
                             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
@@ -116,7 +102,6 @@ export default function TopNavBar() {
                 <Popover>
                     <PopoverTrigger>
                         <IconButton
-                            size={'md'}
                             icon={<HamburgerIcon />}
                             aria-label={'Open Menu'}
                             display={{ md: 'none' }}

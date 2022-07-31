@@ -1,21 +1,9 @@
 import { Select, Stack } from '@chakra-ui/react';
-
+import { CategoriesData } from '../data/data';
 export interface Item {
     label: string;
     value: string;
 }
-const categories = [
-    { value: "general", label: "General" },
-    { value: "lifestyle", label: "Life Style" },
-    { value: "fashion", label: "Fashion" },
-    { value: "technology", label: "Technology" },
-    { value: "business", label: "Business" },
-    { value: "economy", label: "Economy" },
-    { value: "sport", label: "Sport" },
-    { value: "people", label: "People" },
-    { value: "country", label: "Country" },
-    { value: "politics", label: "Politics" }
-];
 
 const Categories = (props: any) => {
     const handleSelectedItemsChange = (e: any) => {
@@ -24,8 +12,8 @@ const Categories = (props: any) => {
     return (
         <Stack spacing={3}>
             <Select variant='outline' onChange={handleSelectedItemsChange}>
-                {categories.map((item: any) =>
-                    <option key={item.value} value={item.value}>{item.label}</option>
+                {CategoriesData?.map(({ value, label }) =>
+                    <option key={value} value={value}>{label}</option>
                 )}
             </Select>
         </Stack>
