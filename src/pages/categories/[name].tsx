@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import TopNavBar from '../layouts/TopNavBar';
+import { useRouter } from 'next/router';
+import { trpc } from "../../utils/trpc";
+import Footer from '../../components/Footer';
+import PreviewCard from '../../components/PreviewCard';
+import QuestionCardSmall from '../../components/QuestionCardSmall';
+import TopNavBar from '../../layouts/TopNavBar';
 import {
-    Heading,
-    Spinner,
-    Text,
-    SimpleGrid,
     Box,
+    Text,
     Container,
-    Link,
+    Heading,
+    SimpleGrid,
+    Spinner,
     useDisclosure
 } from '@chakra-ui/react';
-import { trpc } from "../utils/trpc";
-import QuestionCardSmall from '../components/QuestionCardSmall';
-import PreviewCard from '../components/PreviewCard';
-import Footer from '../components/Footer';
 
-export default function DailyQuestions() {
-    const { data, isLoading, isError } = trpc.useQuery(["question.getAllQuestions"]);
+const CategoryQuestions = () => {
+    const router = useRouter();
+    const { data, isLoading } = trpc.useQuery(["question.getQuestionsByCategory", { categoryName: router.query.name as string }]);
     const [selectedPost, setSelectedPost] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -24,10 +25,6 @@ export default function DailyQuestions() {
         setSelectedPost(question);
         onOpen();
     };
-
-
-    const IMAGE = 'https://random.imagecdn.app/445/320';
-
     return (
         <>
             {isLoading ? <div className="flex items-center justify-center h-screen"><Spinner /></div> :
@@ -37,7 +34,7 @@ export default function DailyQuestions() {
                         <Box textAlign="center">
                             <Heading as="h1" size="4xl">
                                 <Text as={'span'} color={'#DB1C70'}>
-                                    {"Hot "}
+                                    {router.query.name + " "}
                                 </Text>
                                 Questions
                             </Heading>
@@ -66,5 +63,7 @@ export default function DailyQuestions() {
                 </Box>
             }
         </>
-    );
+    )
 }
+
+export default CategoryQuestions

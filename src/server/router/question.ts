@@ -16,12 +16,34 @@ export const questionRouter = createRouter()
             });
         },
     })
+    .query("getQuestionsByCategory", {
+        input: z.object({
+            categoryName: z.string()
+        }),
+        async resolve({ input, ctx }) {
+            return await ctx.prisma.question.findMany({
+                where: {
+                    categoryName: input?.categoryName
+                },
+                include: {
+                    category: true,
+                    author: {
+                        select: {
+                            image: true,
+                            name: true
+                        }
+                    }
+                }
+            });
+        }
+    })
     .mutation("question", {
         input: z.object({
             title: z.string().min(5).max(150),
             content: z.string().min(20).max(300),
             email: z.string(),
             category: z.string(),
+            categoryName: z.string(),
             imageUrl: z.string()
         }),
         async resolve({ input, ctx }) {
@@ -30,6 +52,7 @@ export const questionRouter = createRouter()
                     title: input?.title,
                     content: input?.content,
                     imageUrl: input?.imageUrl,
+                    categoryName: input?.categoryName,
                     author: {
                         connectOrCreate: {
                             create: {

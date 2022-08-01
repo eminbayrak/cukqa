@@ -64,18 +64,19 @@ model VerificationToken {
 }
 
 model Question {
-    id        String     @id @default(uuid())
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    title     String
-    content   String
-    published Boolean    @default(false)
-    viewCount Int        @default(0)
-    author    User       @relation(fields: [authorId], references: [id])
-    authorId  String
-    category  Category[]
-    like      Like[]
-    imageUrl  String     @default("")
+    id           String     @id @default(uuid())
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
+    title        String
+    content      String
+    published    Boolean    @default(false)
+    viewCount    Int        @default(0)
+    author       User       @relation(fields: [authorId], references: [id])
+    authorId     String
+    category     Category[]
+    categoryName String     @default("")
+    like         Like[]
+    imageUrl     String     @default("")
 }
 
 model Category {

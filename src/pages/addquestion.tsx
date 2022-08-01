@@ -20,7 +20,7 @@ import {
 import BackButton from '../components/BackButton';
 import TopNavBar from '../layouts/TopNavBar';
 import { useRouter } from 'next/router';
-import Categories from '../components/Categories';
+import CategoriesDropdown from '../components/CategoriesDropdown';
 import Footer from '../components/Footer';
 import Dropzone, { useDropzone } from 'react-dropzone';
 
@@ -89,6 +89,7 @@ const AddQuestion: React.FC<Question> = (props: any) => {
             category: e.target[2].value,
             imageUrl: e.target[3].value,
             email: session?.user?.email || '',
+            categoryName: e.target[2].value
         }
         const response = await question.mutateAsync(data);
         if ((await response).success) {
@@ -182,7 +183,7 @@ const AddQuestion: React.FC<Question> = (props: any) => {
                             </FormControl>
                             <FormControl id="category" isRequired>
                                 <FormLabel htmlFor='category'>Category</FormLabel>
-                                <Categories category={handleCategoryChange} />
+                                <CategoriesDropdown category={handleCategoryChange} />
                             </FormControl>
                             {/* <FormControl id="uploadImg" isRequired>
                                 <FormLabel htmlFor='uploadImg'>Image</FormLabel>

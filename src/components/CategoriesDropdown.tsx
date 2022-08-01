@@ -5,7 +5,7 @@ export interface Item {
     value: string;
 }
 
-const Categories = (props: any) => {
+const CategoriesDropdown = (props: any) => {
     const handleSelectedItemsChange = (e: any) => {
         props.category(e.target.value)
     };
@@ -20,4 +20,4 @@ const Categories = (props: any) => {
     );
 }
 
-export default Categories;
+export default CategoriesDropdown;
