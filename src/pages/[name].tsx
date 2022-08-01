@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { trpc } from "../../utils/trpc";
-import Footer from '../../components/Footer';
-import PreviewCard from '../../components/PreviewCard';
-import QuestionCardSmall from '../../components/QuestionCardSmall';
-import TopNavBar from '../../layouts/TopNavBar';
+import { trpc } from "../utils/trpc";
+import Footer from '../components/Footer';
+import PreviewCard from '../components/PreviewCard';
+import QuestionCardSmall from '../components/QuestionCardSmall';
+import TopNavBar from '../layouts/TopNavBar';
 import {
     Box,
     Text,
