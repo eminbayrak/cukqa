@@ -19,6 +19,7 @@ specifiers:
   eslint: 8.18.0
   eslint-config-next: 12.1.6
   eslint-plugin-prettier: ^4.2.1
+  lodash: ^4.17.21
   next: 12.2.0
   next-auth: ^4.10.0
   postcss: ^8.4.14
@@ -45,6 +46,7 @@ dependencies:
   '@trpc/server': 9.26.2
   '@types/lodash': 4.14.182
   chakra-ui-autocomplete: 1.4.5_xwgbrsjvnxqyo2de7do7ejeup4
+  lodash: 4.17.21
   next: 12.2.0_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.10.2_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -2600,6 +2602,10 @@ packages:
 
   /lodash.mergewith/4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
+    dev: false
+
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /loose-envify/1.4.0:
