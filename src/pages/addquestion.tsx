@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 import CategoriesDropdown from '../components/CategoriesDropdown';
 import Footer from '../components/Footer';
 import Dropzone, { useDropzone } from 'react-dropzone';
-
+import Head from "next/head";
 interface Question {
     title: String,
     content: String,
@@ -145,6 +145,9 @@ const AddQuestion: React.FC<Question> = (props: any) => {
 
     return (
         <>
+            <Head>
+                <title>CukQA | Add Question</title>
+            </Head>
             <TopNavBar />
             <Box textAlign="center">
                 <Heading as="h1" pt={20} size="3xl">

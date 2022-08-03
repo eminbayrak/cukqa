@@ -19,6 +19,7 @@
     "@trpc/next": "^9.26.0",
     "@trpc/react": "^9.26.0",
     "@trpc/server": "^9.26.0",
+    "@types/lodash": "^4.14.182",
     "chakra-ui-autocomplete": "^1.4.5",
     "next": "12.2.0",
     "next-auth": "^4.10.0",

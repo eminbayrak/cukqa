@@ -14,6 +14,8 @@ import {
     Spinner,
     useDisclosure
 } from '@chakra-ui/react';
+import Head from "next/head";
+import _ from 'lodash';
 
 const CategoryQuestions = () => {
     const router = useRouter();
@@ -25,8 +27,12 @@ const CategoryQuestions = () => {
         setSelectedPost(question);
         onOpen();
     };
+    const title = _.startCase(_.toLower(router.query.name as string));
     return (
         <>
+            <Head>
+                <title>CukQA | {title} Questions</title>
+            </Head>
             {isLoading ? <div className="flex items-center justify-center h-screen"><Spinner /></div> :
                 <Box minHeight="100vh" display="flex" flexDir="column">
                     <TopNavBar />
@@ -34,7 +40,7 @@ const CategoryQuestions = () => {
                         <Box textAlign="center">
                             <Heading as="h1" size="4xl">
                                 <Text as={'span'} color={'#DB1C70'}>
-                                    {router.query.name + " "}
+                                    {title + " "}
                                 </Text>
                                 Questions
                             </Heading>

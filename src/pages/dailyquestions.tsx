@@ -14,6 +14,7 @@ import { trpc } from "../utils/trpc";
 import QuestionCardSmall from '../components/QuestionCardSmall';
 import PreviewCard from '../components/PreviewCard';
 import Footer from '../components/Footer';
+import Head from "next/head";
 
 export default function DailyQuestions() {
     const { data, isLoading, isError } = trpc.useQuery(["question.getAllQuestions"]);
@@ -32,6 +33,9 @@ export default function DailyQuestions() {
         <>
             {isLoading ? <div className="flex items-center justify-center h-screen"><Spinner /></div> :
                 <Box minHeight="100vh" display="flex" flexDir="column">
+                    <Head>
+                        <title>CukQA | Daily Questions</title>
+                    </Head>
                     <TopNavBar />
                     <Container maxW="4xl" mt="95px" flex={1}>
                         <Box textAlign="center">

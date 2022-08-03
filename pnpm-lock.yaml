@@ -10,6 +10,7 @@ specifiers:
   '@trpc/next': ^9.26.0
   '@trpc/react': ^9.26.0
   '@trpc/server': ^9.26.0
+  '@types/lodash': ^4.14.182
   '@types/node': 18.0.0
   '@types/react': 18.0.14
   '@types/react-dom': 18.0.5
@@ -42,6 +43,7 @@ dependencies:
   '@trpc/next': 9.26.2_tqsmk65hfpxyf6in4spvlb5n6u
   '@trpc/react': 9.26.2_4zadt2mtfbx7275mbcwrjz2noe
   '@trpc/server': 9.26.2
+  '@types/lodash': 4.14.182
   chakra-ui-autocomplete: 1.4.5_xwgbrsjvnxqyo2de7do7ejeup4
   next: 12.2.0_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.10.2_biqbaboplfbrettd7655fr4n2y
