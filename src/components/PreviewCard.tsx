@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
     Avatar,
     Box,
@@ -80,13 +80,13 @@ export default function PreviewImage(props: any) {
         setIsLoggedIn(false);
         data?.map((obj: any) => {
             obj.like ? yesCount++ : noCount++;
-            session?.user?.email && setIsLoggedIn(true);
             if (obj.email === session?.user?.email) {
                 setCanVote(false)
             }
         });
         setYes(yesCount);
         setNo(noCount);
+        session?.user?.email && setIsLoggedIn(true);
     }, [data, session?.user?.email]);
 
     return (

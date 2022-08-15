@@ -26,6 +26,21 @@ export default function DailyQuestions() {
         onOpen();
     };
 
+    interface Questions {
+        title: String,
+        content: String,
+        published: Boolean,
+        viewCount: Number,
+        authorId: String,
+        categoryName: String,
+        imageUrl: String,
+        createdAt: String,
+        author: {
+            name: String,
+            image: String
+        }
+    }
+
 
     const IMAGE = 'https://random.imagecdn.app/445/320';
 

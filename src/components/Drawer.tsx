@@ -39,7 +39,7 @@ function DrawerBar() {
                     <DrawerHeader>Categories</DrawerHeader>
                     <DrawerBody>
                         {CategoriesData?.map(({ value, label }) => (
-                            <div key={value} onClick={() => router.push(`${value}`)} className="text-gray-200 w-full cursor-pointer hover:bg-gray-600 px-2 py-2 rounded-md"># {label}</div>)
+                            <div key={value} onClick={() => router.push(`${value}`)} className="w-full cursor-pointer hover:bg-gray-400 px-2 py-2 rounded-md"># {label}</div>)
                         )}
                     </DrawerBody>
                 </DrawerContent>

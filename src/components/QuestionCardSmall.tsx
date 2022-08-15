@@ -43,7 +43,7 @@ export default function QuestionCardSmall(props: any) {
                     minW={'240px'}
                     borderRadius={3}
                     transform={'translate(-50%, -50%)'}
-                    top={'10%'} left={'50%'}
+                    top={'50%'} left={'50%'}
                     backgroundColor={cardColorBg}
                     position={'absolute'}
                 >

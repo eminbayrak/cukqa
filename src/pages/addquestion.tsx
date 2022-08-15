@@ -172,8 +172,8 @@ const AddQuestion: React.FC<Question> = (props: any) => {
                     rounded="lg"
                     shadow="lg"
                 >
-                    {/* <BackButton /> */}
-                    <Text color={'gray.400'} mb={5} fontSize={{ base: 'sm', sm: 'md' }}>Make sure that your question is clear and only has yes or no answer!</Text>
+                    <BackButton />
+                    <Text pt={5} color={'gray.400'} mb={5} fontSize={{ base: 'sm', sm: 'md' }}>Make sure that your question is clear and only has yes or no answer!</Text>
                     <form onSubmit={addQuestion}>
                         <Stack spacing={4}>
                             <FormControl id="title" isRequired>
