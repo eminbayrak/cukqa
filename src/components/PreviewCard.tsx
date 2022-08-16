@@ -143,7 +143,11 @@ export default function PreviewImage(props: any) {
                             lineHeight={1.1}
                             fontSize={{ base: '1xl', sm: '2xl', md: '3xl' }}
                         >
-                            {props.question.title}
+                            {
+                                props.question.title.charAt(props.question.title.length - 1) == "?"
+                                    ? props.question.title.slice(0, props.question.title.length - 1)
+                                    : props.question.title
+                            }
                             <Text
                                 as={'span'}
                                 bgGradient="linear(to-r, red.400,pink.400)"
