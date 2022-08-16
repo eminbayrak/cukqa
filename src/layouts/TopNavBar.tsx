@@ -27,7 +27,6 @@ import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import LoginButton from '../components/LoginButton';
 import { useRouter } from 'next/router';
 import DrawerBar from '../components/Drawer';
-import { IconName } from "react-icons/di";
 
 export const LoggedIn = (props: any) => {
     return (
