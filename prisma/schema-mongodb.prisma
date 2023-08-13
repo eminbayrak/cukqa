@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider          = "mongodb"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Example {
+    id String @id @map("_id")
+}
+
+// Necessary for Next auth
+model Account {
+    id                String  @id @map("_id")
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @map("_id")
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String     @id @map("_id")
+    name          String?
+    email         String?    @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    questions     Question[]
+    liked         Like[]
+}
+
+model VerificationToken {
+    id         String   @id @map("_id")
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Question {
+    id           String     @id @map("_id")
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
+    title        String
+    content      String
+    published    Boolean    @default(false)
+    viewCount    Int        @default(0)
+    author       User       @relation(fields: [authorId], references: [id])
+    authorId     String
+    category     Category[]
+    categoryName String     @default("")
+    like         Like[]
+    imageUrl     String     @default("")
+}
+
+model Category {
+    id         String   @id @map("_id")
+    category   String
+    question   Question @relation(fields: [questionId], references: [id])
+    questionId String
+}
+
+model Like {
+    id         String   @id @map("_id")
+    qustion    Question @relation(fields: [questionId], references: [id])
+    questionId String
+    email      String
+    likedBy    User     @relation(fields: [email], references: [email])
+    like       Boolean
+    createdAt  DateTime @default(now())
+}
