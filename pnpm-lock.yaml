@@ -38,6 +38,9 @@ dependencies:
   chakra-ui-autocomplete:
     specifier: ^1.4.5
     version: 1.4.5(@chakra-ui/react@2.2.4)(@chakra-ui/system@2.2.2)(framer-motion@10.15.1)(react-dom@18.2.0)(react@18.2.0)
+  framer-motion:
+    specifier: ^10.15.1
+    version: 10.15.1(react-dom@18.2.0)(react@18.2.0)
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
