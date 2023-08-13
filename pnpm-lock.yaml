@@ -35,6 +35,9 @@ dependencies:
   '@types/lodash':
     specifier: ^4.14.182
     version: 4.14.182
+  '@vercel/analytics':
+    specifier: ^1.0.2
+    version: 1.0.2
   chakra-ui-autocomplete:
     specifier: ^1.4.5
     version: 1.4.5(@chakra-ui/react@2.2.4)(@chakra-ui/system@2.2.2)(framer-motion@10.15.1)(react-dom@18.2.0)(react@18.2.0)
@@ -1532,6 +1535,10 @@ packages:
       '@typescript-eslint/types': 5.30.7
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/analytics@1.0.2:
+    resolution: {integrity: sha512-BZFxVrv24VbNNl5xMxqUojQIegEeXMI6rX3rg1uVLYUEXsuKNBSAEQf4BWEcjQDp/8aYJOj6m8V4PUA3x/cxgg==}
+    dev: false
 
   /@xobotyi/scrollbar-width@1.9.5:
     resolution: {integrity: sha512-N8tkAACJx2ww8vFMneJmaAgmjAG1tnVBZJRLRcx061tmsLRZHSEZSLuGWnwPtunsSLvSqXQ2wfp7Mgqg1I+2dQ==}

@@ -6,6 +6,7 @@ import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import { ChakraProvider } from '@chakra-ui/react';
+import { Analytics } from '@vercel/analytics/react';
 
 const MyApp: AppType = ({
   Component,
@@ -15,6 +16,7 @@ const MyApp: AppType = ({
     <SessionProvider session={session}>
       <ChakraProvider>
         <Component {...pageProps} />
+        <Analytics />
       </ChakraProvider>
     </SessionProvider>
   );
