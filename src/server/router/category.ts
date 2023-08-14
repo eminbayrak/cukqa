@@ -8,7 +8,7 @@ export const categoryRouter = createRouter()
             category: z.string()
         }),
         async resolve({ input, ctx }) {
-            return await ctx.prisma.category.findMany({
+            return await ctx.prisma.category?.findMany({
                 where: {
                     category: input?.category
                 },
