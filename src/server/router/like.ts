@@ -10,7 +10,7 @@ export const likesRouter = createRouter()
             questionId: z.string()
         }),
         async resolve({ input, ctx }) {
-            return await ctx.prisma.like.findMany({
+            return await ctx.prisma.like?.findMany({
                 where: {
                     questionId: input?.questionId
                 },

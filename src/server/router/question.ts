@@ -4,7 +4,7 @@ import { z } from "zod";
 export const questionRouter = createRouter()
     .query("getAllQuestions", {
         async resolve({ ctx }) {
-            return await ctx.prisma.question.findMany({
+            return await ctx.prisma.question?.findMany({
                 include: {
                     author: {
                         select: {
@@ -21,7 +21,7 @@ export const questionRouter = createRouter()
             categoryName: z.string()
         }),
         async resolve({ input, ctx }) {
-            return await ctx.prisma.question.findMany({
+            return await ctx.prisma.question?.findMany({
                 where: {
                     categoryName: input?.categoryName
                 },
