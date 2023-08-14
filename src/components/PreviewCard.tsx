@@ -30,7 +30,7 @@ export default function PreviewImage(props: any) {
     const toast = useToast();
     const MotionBtn = motion(Button);
     const size = useBreakpointValue({ base: 'sm', md: 'sm' });
-    const IMAGE = 'https://random.imagecdn.app/445/320';
+    const randomImage = `https://random.imagecdn.app/v1/image?width=500&height=150&category=${props.question?.categoryName}`;
     const [yes, setYes] = useState(0);
     const [no, setNo] = useState(0);
     const [canVote, setCanVote] = useState(true);
@@ -110,9 +110,9 @@ export default function PreviewImage(props: any) {
                         <Image
                             height={230}
                             width={'100%'}
-                            alt={props.question.title}
+                            alt={props?.question?.title}
                             objectFit={'cover'}
-                            src={props.question.imageUrl ?? IMAGE}
+                            src={props.question.imageUrl || randomImage}
                         />
                         <Box
                             position="absolute"
@@ -144,9 +144,9 @@ export default function PreviewImage(props: any) {
                             fontSize={{ base: '1xl', sm: '2xl', md: '3xl' }}
                         >
                             {
-                                props.question.title.charAt(props.question.title.length - 1) == "?"
-                                    ? props.question.title.slice(0, props.question.title.length - 1)
-                                    : props.question.title
+                                props.question?.title.charAt(props.question?.title.length - 1) == "?"
+                                    ? props.question?.title?.slice(0, props.question.title.length - 1)
+                                    : props.question?.title
                             }
                             <Text
                                 as={'span'}
@@ -157,7 +157,7 @@ export default function PreviewImage(props: any) {
                             </Text>
                         </Heading>
                         <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
-                            {props.question.content}
+                            {props.question?.content}
                         </Text>
                     </Stack>
                     <Box as={'form'} mt={10}>
@@ -199,11 +199,11 @@ export default function PreviewImage(props: any) {
                     <Divider mt={8} />
                     <Stack mt={4} direction={'row'} spacing={4} align={'center'}>
                         <Avatar
-                            src={props.question.author.image ?? 'https://1.bp.blogspot.com/-ssJSWVoznXM/Xl1mCmu921I/AAAAAAAAnp0/eCbQVoaBfKcZaSBL2UJ5tvNMzmSpBwXtwCLcBGAsYHQ/s2560/anonymous_background-wallpaper-120x120.jpg'}
+                            src={props.question?.author.image ?? 'https://1.bp.blogspot.com/-ssJSWVoznXM/Xl1mCmu921I/AAAAAAAAnp0/eCbQVoaBfKcZaSBL2UJ5tvNMzmSpBwXtwCLcBGAsYHQ/s2560/anonymous_background-wallpaper-120x120.jpg'}
                         />
                         <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-                            <Text fontWeight={600}>{props.question.author.name ?? 'Anonymous'}</Text>
-                            <Text color={'gray.500'}>{props.question.createdAt.toLocaleString()}</Text>
+                            <Text fontWeight={600}>{props.question?.author.name ?? 'Anonymous'}</Text>
+                            <Text color={'gray.500'}>{props.question?.createdAt.toLocaleString()}</Text>
                         </Stack>
                     </Stack>
                 </ModalBody>
