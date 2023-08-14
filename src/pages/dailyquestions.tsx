@@ -42,7 +42,7 @@ export default function DailyQuestions() {
     }
 
 
-    const IMAGE = 'https://random.imagecdn.app/445/320';
+    // const IMAGE = 'https://random.imagecdn.app/445/320/';
 
     return (
         <>
@@ -65,19 +65,24 @@ export default function DailyQuestions() {
                             </Text>
                         </Box>
                         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5} mt={6}>
-                            {data?.map((question: any) =>
-                                <QuestionCardSmall
-                                    key={question.title}
-                                    onImageClick={view}
-                                    question={question}
-                                    title={question.title}
-                                    subtitle={question.content}
-                                    name={question.author.name}
-                                    avatarImg={question.author.image}
-                                    img={question.imageUrl}
-                                    createdAt={`${question.createdAt.toLocaleString("en-US", { month: "short" })} ${question.createdAt.getDate()}, ${question.createdAt.getFullYear()}`}
-                                />
-                            )}
+                            {data?.map((question: any) => {
+                                const randomImage = `https://random.imagecdn.app/v1/image?width=500&height=150&category=${question.categoryName}`;
+                                const imageUrl = question.imageUrl || randomImage; // Use question.imageUrl or randomImage as a fallback
+
+                                return (
+                                    <QuestionCardSmall
+                                        key={question.title}
+                                        onImageClick={view}
+                                        question={question}
+                                        title={question?.title}
+                                        subtitle={question?.content}
+                                        name={question?.author?.name}
+                                        avatarImg={question?.author?.image}
+                                        img={imageUrl} // Use imageUrl here
+                                        createdAt={`${question?.createdAt?.toLocaleString("en-US", { month: "short" })} ${question?.createdAt?.getDate()}, ${question?.createdAt?.getFullYear()}`}
+                                    />
+                                );
+                            })}
                         </SimpleGrid>
                     </Container>
                     {selectedPost && <PreviewCard isOpen={isOpen} onClose={onClose} question={selectedPost} />}
