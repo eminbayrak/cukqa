@@ -20,8 +20,8 @@ export const authOptions: NextAuthOptions = {
     //   clientSecret: process.env.GITHUB_SECRET,
     // }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: env.GOOGLE_CLIENT_ID || '',
+      clientSecret: env.GOOGLE_CLIENT_SECRET || '',
     }),
     // TwitterProvider({
     //   clientId: env.TWITTER_CLIENT_ID || '',
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     //   },
     // }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/signin'
   }
